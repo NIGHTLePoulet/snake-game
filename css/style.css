@@ -8,4 +8,11 @@ html {
 
 body {
     height: 100vh;
+    display: flex;
+    justify-content: center;
+}
+
+#snake-grid {
+    background-color: lightgoldenrodyellow;
+    border: black 1px solid;
 }
