@@ -6,8 +6,11 @@ const board = {
 }
 
 const snake = {
-    x: 10, // middle of the width
-    y: 10, // middle of the heigt
+    body: [
+        {x: 10, y: 10}, // head
+        {x: 9, y: 10}, // body
+        {x: 8, y: 10} // queue
+    ],
     direction: null,
 }
 
@@ -21,7 +24,6 @@ board.canvas.height = board.rows * board.blockSize
 board.canvas.width = board.cols * board.blockSize
 
 document.addEventListener('keydown', (e) => {
-    console.log(e.key)
     if (e.key === 'ArrowRight') snake.direction = 'right'
     if (e.key === 'ArrowLeft') snake.direction = 'left'
     if (e.key === 'ArrowUp') snake.direction = 'up'
@@ -32,8 +34,23 @@ function drawSnake() {
     // Draw head Snake
     board.ctx.fillStyle = 'green'
     board.ctx.fillRect(
-        board.blockSize * snake.x, 
-        board.blockSize * snake.y, 
+        board.blockSize * snake.body[0].x, 
+        board.blockSize * snake.body[0].y, 
+        board.blockSize,
+        board.blockSize)
+
+    // Draw body snake
+    
+    board.ctx.fillRect(
+        board.blockSize * snake.body[1].x, 
+        board.blockSize * snake.body[1].y, 
+        board.blockSize,
+        board.blockSize) 
+
+    // Draw queue snake
+    board.ctx.fillRect(
+        board.blockSize * snake.body[2].x, 
+        board.blockSize * snake.body[2].y, 
         board.blockSize,
         board.blockSize) 
 }
@@ -56,16 +73,39 @@ function randomFoodGenerator() {
 
 
 function animation() {
-    if (snake.direction === 'right') snake.x += 1
-    if (snake.direction === 'left') snake.x -= 1
-    if (snake.direction === 'up') snake.y -= 1
-    if (snake.direction === 'down') snake.y += 1
-    
+    if (snake.direction === 'right') {
+        const newHead = {x: snake.body[0].x + 1, y: snake.body[0].y}
+        snake.body.unshift(newHead)
+        snake.body.pop()
+    }
+
+    if (snake.direction === 'left') {
+        const newHead = {x: snake.body[0].x - 1, y: snake.body[0].y}
+        snake.body.unshift(newHead)
+        snake.body.pop()
+    }
+
+    if (snake.direction === 'up') {
+        const newHead = {x: snake.body[0].x, y: snake.body[0].y - 1}
+        snake.body.unshift(newHead)
+        snake.body.pop()
+    }
+
+    if (snake.direction === 'down') {
+        const newHead = {x: snake.body[0].x, y: snake.body[0].y + 1}
+        snake.body.unshift(newHead)
+        snake.body.pop()
+    }
+        
     board.ctx.clearRect(0, 0, board.canvas.width, board.canvas.height)
 
     drawSnake()
     drawFood()
-     
+
+    if ((snake.body[0].x === food.x) && (snake.body[0].y && food.y)) {
+        console.log('Eat')
+    }
+
 }
 randomFoodGenerator()
-setInterval(animation, 100)
+setInterval(animation, 90)
