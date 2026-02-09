@@ -13,6 +13,6 @@ body {
 }
 
 #snake-grid {
-    background-color: lightgoldenrodyellow;
+    background-color: black;
     border: black 1px solid;
 }
