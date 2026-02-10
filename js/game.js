@@ -40,7 +40,6 @@ function drawSnake() {
         board.blockSize)
 
     // Draw body snake
-    
     board.ctx.fillRect(
         board.blockSize * snake.body[1].x, 
         board.blockSize * snake.body[1].y, 
@@ -71,6 +70,9 @@ function randomFoodGenerator() {
     food.y = Math.floor(Math.random() * board.rows)
 }
 
+function foodEaten() {
+    board.ctx.clearRect(food.x * board.blockSize, food.y * board.blockSize, board.blockSize, board.blockSize)
+}
 
 function animation() {
     if (snake.direction === 'right') {
@@ -102,10 +104,11 @@ function animation() {
     drawSnake()
     drawFood()
 
-    if ((snake.body[0].x === food.x) && (snake.body[0].y && food.y)) {
+    if ((snake.body[0].x === food.x) && (snake.body[0].y === food.y)) {
         console.log('Eat')
+        foodEaten()
+        randomFoodGenerator()
     }
-
 }
 randomFoodGenerator()
 setInterval(animation, 90)
