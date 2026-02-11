@@ -1,3 +1,4 @@
+const restartBtn = document.querySelector('.btn-rst')
 const board = {
     canvas: document.querySelector('#snake-grid'),
     blockSize:  25,
@@ -5,16 +6,17 @@ const board = {
     cols: 20
 }
 
-const snake = {
+let snake = {
     body: [
         {x: 10, y: 10}, // head
         {x: 9, y: 10}, // body
         {x: 8, y: 10} // queue
     ],
     direction: null,
+    dead: false
 }
 
-const food = {
+let food = {
     x: null,
     y: null
 }
@@ -30,8 +32,31 @@ document.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowDown') snake.direction = 'down'
 })
 
+document.addEventListener('click', () => {
+    if (snake.dead) {
+        resetGame()
+    }
+})
+
+function resetGame() {
+    snake = {
+        body: [
+            {x: 10, y: 10}, // head
+            {x: 9, y: 10}, // body
+            {x: 8, y: 10} // queue
+        ],
+        direction: null,
+        dead: false
+    }
+
+    food = {
+        x: null,
+        y: null
+    }
+    game()
+}
+
 function drawSnake() {
-    // Draw head Snake
     board.ctx.fillStyle = 'green'
     for (let i = 0; i < snake.body.length; i++) {
         board.ctx.fillRect(
@@ -43,7 +68,6 @@ function drawSnake() {
 }
 
 function drawFood() {
-    // Draw food 
     board.ctx.fillStyle = 'red'
     board.ctx.fillRect(
         board.blockSize * food.x, 
@@ -73,11 +97,11 @@ function foodEaten() {
 }
 
 function animation() {
-    const test = verifyFoodEaten()
+    const foodEaten = verifyFoodEaten()
     if (snake.direction === 'right') {
         const newHead = {x: snake.body[0].x + 1, y: snake.body[0].y}
         snake.body.unshift(newHead)
-        if (!test) {
+        if (!foodEaten) {
             snake.body.pop()
         }
     }
@@ -85,7 +109,7 @@ function animation() {
     if (snake.direction === 'left') {
         const newHead = {x: snake.body[0].x - 1, y: snake.body[0].y}
         snake.body.unshift(newHead)
-        if (!test) {
+        if (!foodEaten) {
             snake.body.pop()
         }
     }
@@ -93,7 +117,7 @@ function animation() {
     if (snake.direction === 'up') {
         const newHead = {x: snake.body[0].x, y: snake.body[0].y - 1}
         snake.body.unshift(newHead)
-        if (!test) {
+        if (!foodEaten) {
             snake.body.pop()
         }
     }
@@ -101,7 +125,7 @@ function animation() {
     if (snake.direction === 'down') {
         const newHead = {x: snake.body[0].x, y: snake.body[0].y + 1}
         snake.body.unshift(newHead)
-        if (!test) {
+        if (!foodEaten) {
             snake.body.pop()
         }
     }
@@ -114,5 +138,20 @@ function animation() {
 
 }
 
-randomFoodGenerator()
-setInterval(animation, 90)
+function loopGame() {
+    randomFoodGenerator()
+    const loop = setInterval(() => {
+        animation()
+        if ((snake.body[0].x * board.blockSize >=  board.canvas.width) || (snake.body[0].x * board.blockSize <=  0) || (snake.body[0].y * board.blockSize >=  board.canvas.height) || (snake.body[0].y * board.blockSize <=  0)) {
+            clearInterval(loop)
+            snake.dead = true
+        }
+    }, 90)
+}
+
+
+function game() {
+    loopGame()
+}
+
+game()

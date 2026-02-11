@@ -10,9 +10,16 @@ body {
     height: 100vh;
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 
 #snake-grid {
     background-color: black;
     border: black 1px solid;
+}
+
+button {
+    width: 12rem;
+    height: 10rem;
+    cursor: pointer;
 }
