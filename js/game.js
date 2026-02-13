@@ -32,7 +32,7 @@ document.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowDown') snake.direction = 'down'
 })
 
-document.addEventListener('click', () => {
+restartBtn.addEventListener('click', () => {
     if (snake.dead) {
         resetGame()
     }
@@ -96,8 +96,25 @@ function foodEaten() {
     
 }
 
+function checkBoardCollision() {
+    if ((snake.body[0].x * board.blockSize >=  board.canvas.width) || (snake.body[0].x * board.blockSize <=  0) || (snake.body[0].y * board.blockSize >=  board.canvas.height) || (snake.body[0].y * board.blockSize <=  0)) {
+            snake.dead = true
+        }
+}
+
+function checkSelfCollision() {
+    const head = snake.body[0]
+
+    for (let i = 1; i < snake.body.length; i++) {
+        if (head.x === snake.body[i].x && head.y === snake.body[i].y) {
+            snake.dead = true 
+        }
+    }
+}
+
 function animation() {
     const foodEaten = verifyFoodEaten()
+
     if (snake.direction === 'right') {
         const newHead = {x: snake.body[0].x + 1, y: snake.body[0].y}
         snake.body.unshift(newHead)
@@ -129,7 +146,8 @@ function animation() {
             snake.body.pop()
         }
     }
-        
+
+
 
     board.ctx.clearRect(0, 0, board.canvas.width, board.canvas.height)
 
@@ -142,9 +160,11 @@ function loopGame() {
     randomFoodGenerator()
     const loop = setInterval(() => {
         animation()
-        if ((snake.body[0].x * board.blockSize >=  board.canvas.width) || (snake.body[0].x * board.blockSize <=  0) || (snake.body[0].y * board.blockSize >=  board.canvas.height) || (snake.body[0].y * board.blockSize <=  0)) {
+        checkSelfCollision()
+        checkBoardCollision()
+        if (snake.dead) {
             clearInterval(loop)
-            snake.dead = true
+            return
         }
     }, 90)
 }
