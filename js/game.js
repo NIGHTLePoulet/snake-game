@@ -1,9 +1,11 @@
 const restartBtn = document.querySelector('.btn-rst')
+const playBtn = document.querySelector('.btn-play')
 const board = {
     canvas: document.querySelector('#snake-grid'),
     blockSize:  25,
     rows: 20,
     cols: 20,
+    start: false
 }
 
 let snake = {
@@ -26,14 +28,21 @@ board.canvas.height = board.rows * board.blockSize
 board.canvas.width = board.cols * board.blockSize
 
 document.addEventListener('keydown', (e) => {
+    if (board.start) {
         if (e.key === 'ArrowRight') snake.direction = 'right'
         if (e.key === 'ArrowLeft') snake.direction = 'left'
         if (e.key === 'ArrowUp') snake.direction = 'up'
         if (e.key === 'ArrowDown') snake.direction = 'down'
+    }
 })
 
 restartBtn.addEventListener('click', () => {
     resetGame()
+})
+
+playBtn.addEventListener('click', () => {
+    board.start = true
+    snake.direction = 'right'
 })
 
 function resetGame() {
@@ -56,24 +65,40 @@ function resetGame() {
 
 function drawSnake() {
     board.ctx.fillStyle = '#00c950'
-    for (let i = 0; i < snake.body.length; i++) {
-        board.ctx.fillRect(
+    board.ctx.beginPath()
+        board.ctx.roundRect(
+            board.blockSize * snake.body[0].x, 
+            board.blockSize * snake.body[0].y, 
+            board.blockSize-2,
+            board.blockSize-2, 
+            6
+        )
+        board.ctx.fill();
+    for (let i = 1; i < snake.body.length; i++) {
+        board.ctx.beginPath()
+        board.ctx.roundRect(
             board.blockSize * snake.body[i].x, 
             board.blockSize * snake.body[i].y, 
-            board.blockSize,
-            board.blockSize)
+            board.blockSize-2,
+            board.blockSize-2, 
+            4
+        )
+        board.ctx.fill();
     }
 }
 
 function drawFood() {
-    board.ctx.fillStyle = 'red'
-    board.ctx.fillRect(
-        board.blockSize * food.x, 
-        board.blockSize * food.y, 
-        board.blockSize,
-        board.blockSize)
+    board.ctx.fillStyle = '#fb2c36ed'
+    board.ctx.beginPath()
+        board.ctx.roundRect(
+            board.blockSize * food.x, 
+            board.blockSize * food.y, 
+            board.blockSize-2,
+            board.blockSize-2, 
+            4
+        )
+    board.ctx.fill();
 }
-
 
 function randomFoodGenerator() {
     food.x = Math.floor(Math.random() * board.cols) 
@@ -95,7 +120,7 @@ function foodEaten() {
 }
 
 function checkBoardCollision() {
-    if ((snake.body[0].x * board.blockSize >=  board.canvas.width) || (snake.body[0].x * board.blockSize <=  0) || (snake.body[0].y * board.blockSize >=  board.canvas.height) || (snake.body[0].y * board.blockSize <=  0)) {
+    if ((snake.body[0].x * board.blockSize >=  board.canvas.width) || (snake.body[0].x * board.blockSize <  0) || (snake.body[0].y * board.blockSize >=  board.canvas.height) || (snake.body[0].y * board.blockSize <  0)) {
             snake.dead = true
         }
 }
