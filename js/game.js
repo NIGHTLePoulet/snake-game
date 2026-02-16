@@ -3,7 +3,7 @@ const board = {
     canvas: document.querySelector('#snake-grid'),
     blockSize:  25,
     rows: 20,
-    cols: 20
+    cols: 20,
 }
 
 let snake = {
@@ -26,16 +26,14 @@ board.canvas.height = board.rows * board.blockSize
 board.canvas.width = board.cols * board.blockSize
 
 document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowRight') snake.direction = 'right'
-    if (e.key === 'ArrowLeft') snake.direction = 'left'
-    if (e.key === 'ArrowUp') snake.direction = 'up'
-    if (e.key === 'ArrowDown') snake.direction = 'down'
+        if (e.key === 'ArrowRight') snake.direction = 'right'
+        if (e.key === 'ArrowLeft') snake.direction = 'left'
+        if (e.key === 'ArrowUp') snake.direction = 'up'
+        if (e.key === 'ArrowDown') snake.direction = 'down'
 })
 
 restartBtn.addEventListener('click', () => {
-    if (snake.dead) {
-        resetGame()
-    }
+    resetGame()
 })
 
 function resetGame() {
@@ -57,7 +55,7 @@ function resetGame() {
 }
 
 function drawSnake() {
-    board.ctx.fillStyle = 'green'
+    board.ctx.fillStyle = '#00c950'
     for (let i = 0; i < snake.body.length; i++) {
         board.ctx.fillRect(
             board.blockSize * snake.body[i].x, 

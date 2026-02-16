@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
@@ -8,9 +11,44 @@
 </head>
 
 <body>
-    <canvas id="snake-grid">
-    </canvas>
-    <button class="btn-rst">Restart</button>
+    <header class="header">
+        <div class="score-display">
+            <div class="current-score">
+                <span>Score</span>
+                <span class="score-value">0</span>
+            </div>
+            <div class="separator"></div>
+            <div class="best-score">
+                <img src="assets/images/bestScore_icon.svg" alt="Trophy Icon">
+                <span>Best</span>
+                <span class="bestScore-value">0</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="canvas-container">
+            <canvas id="snake-grid">
+            </canvas>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="btn-container">
+            <button class="btn btn-play">
+                <img src="assets/images/play-icon.svg" alt="Play button icon">
+                <p class="btn-text">Jouer</p>
+            </button>
+            <button class="btn btn-rst">
+                <img src="assets/images/restart-icon.svg" alt="Replay button icon">
+                <p class="btn-text">Restart</p>
+            </button>
+        </div>
+
+        <div class="help-text">
+            <p>Utilisez les flèches du clavier pour contrôler le serpent</p>
+        </div>
+    </footer>
     <script src="js/game.js"></script>
 </body>
 </html>
