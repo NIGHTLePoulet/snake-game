@@ -1,5 +1,9 @@
 const restartBtn = document.querySelector('.btn-rst')
 const playBtn = document.querySelector('.btn-play')
+const playerPoints = document.querySelector('.score-value')
+const playerBestScore = document.querySelector('.bestScore-value')
+let bestScore = 0
+let score = 0
 const board = {
     canvas: document.querySelector('#snake-grid'),
     blockSize:  25,
@@ -60,6 +64,11 @@ function resetGame() {
         x: null,
         y: null
     }
+
+    score = 0
+    playerPoints.textContent = score
+
+    
     game()
 }
 
@@ -100,6 +109,15 @@ function drawFood() {
     board.ctx.fill();
 }
 
+function displayBestScore() {
+    if (score > bestScore) {
+        bestScore = score
+        playerBestScore.textContent = score
+    } else {
+        playerBestScore.textContent = bestScore
+    }
+}
+
 function randomFoodGenerator() {
     food.x = Math.floor(Math.random() * board.cols) 
     food.y = Math.floor(Math.random() * board.rows)
@@ -109,6 +127,8 @@ function verifyFoodEaten() {
     if ((snake.body[0].x === food.x) && (snake.body[0].y === food.y)) {
         foodEaten()
         randomFoodGenerator()
+        score += 1
+        playerPoints.textContent = score
         return true
     }
     return false
@@ -187,6 +207,7 @@ function loopGame() {
         checkBoardCollision()
         if (snake.dead) {
             clearInterval(loop)
+            displayBestScore()
             return
         }
     }, 90)
