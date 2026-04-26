@@ -15,10 +15,9 @@ This project is a web-based implementation of the iconic Snake game. Control the
 
 ## Technologies Used
 
-- HTML5 Canvas
-- CSS3
+- HTML Canvas
+- CSS
 - Vanilla JavaScript
-- PHP (for score persistence)
 
 ## How to Play
 
